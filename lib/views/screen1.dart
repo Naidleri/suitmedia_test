@@ -65,49 +65,49 @@ class Screen1 extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          Image.asset(
-            "assets/images/background@3x.png",
-            height: double.maxFinite,
-            fit: BoxFit.cover,
+          // Image.asset(
+          //   "assets/images/background@3x.png",
+          //   height: double.maxFinite,
+          //   fit: BoxFit.cover,
+          // ),
+          //membuat background secara manual
+          Container(color: Color.fromARGB(255, 75, 164, 170)),
+          Container(
+            decoration: const BoxDecoration(
+              gradient: RadialGradient(
+                colors: [
+                  Color.fromARGB(255, 86, 109, 239),
+                  Colors.transparent,
+                ],
+                focal: Alignment(-1.5, -0.5),
+                radius: 1.3,
+              ),
+            ),
           ),
-          // membuat background secara manual
-          // Container(color: Color.fromARGB(255, 75, 164, 170)),
-          // Container(
-          //   decoration: const BoxDecoration(
-          //     gradient: RadialGradient(
-          //       colors: [
-          //         Color.fromARGB(255, 86, 109, 239),
-          //         Colors.transparent,
-          //       ],
-          //       focal: Alignment(-1.5, -0.5),
-          //       radius: 1.3,
-          //     ),
-          //   ),
-          // ),
-          // Container(
-          //   decoration: const BoxDecoration(
-          //     gradient: RadialGradient(
-          //       colors: [
-          //         Color.fromARGB(142, 255, 201, 251),
-          //         Colors.transparent,
-          //       ],
-          //       focal: Alignment(-1.4, 0.5),
-          //       radius: 1.0,
-          //     ),
-          //   ),
-          // ),
-          // Container(
-          //   decoration: const BoxDecoration(
-          //     gradient: RadialGradient(
-          //       colors: [
-          //         Color.fromARGB(191, 3, 255, 188),
-          //         Colors.transparent,
-          //       ],
-          //       focal: Alignment(1.2, -0.5),
-          //       radius: 1.5,
-          //     ),
-          //   ),
-          // ),
+          Container(
+            decoration: const BoxDecoration(
+              gradient: RadialGradient(
+                colors: [
+                  Color.fromARGB(142, 255, 201, 251),
+                  Colors.transparent,
+                ],
+                focal: Alignment(-1.4, 0.5),
+                radius: 1.0,
+              ),
+            ),
+          ),
+          Container(
+            decoration: const BoxDecoration(
+              gradient: RadialGradient(
+                colors: [
+                  Color.fromARGB(191, 3, 255, 188),
+                  Colors.transparent,
+                ],
+                focal: Alignment(1.2, -0.5),
+                radius: 1.5,
+              ),
+            ),
+          ),
           Center(
             child: Container(
               width: screenWidth * 0.8,
