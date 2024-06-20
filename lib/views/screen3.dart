@@ -11,6 +11,7 @@ class Screen3 extends StatefulWidget {
 
 class _Screen3State extends State<Screen3> {
   final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey = GlobalKey();
+  final ScrollController _scrollController = ScrollController();
 
   @override
   void initState() {
@@ -18,6 +19,13 @@ class _Screen3State extends State<Screen3> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _refreshIndicatorKey.currentState?.show();
     });
+    _scrollController.addListener(_scrollListener);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
   }
 
   Future<void> _refreshUsers(BuildContext context) async {
@@ -25,8 +33,13 @@ class _Screen3State extends State<Screen3> {
         .fetchUsers(refresh: true);
   }
 
-  Future<void> _loadMoreUsers(BuildContext context) async {
-    await Provider.of<UserProvider>(context, listen: false).fetchUsers();
+  void _scrollListener() {
+    if (_scrollController.position.pixels ==
+            _scrollController.position.maxScrollExtent &&
+        !Provider.of<UserProvider>(context, listen: false).isLoading &&
+        Provider.of<UserProvider>(context, listen: false).hasMore) {
+      Provider.of<UserProvider>(context, listen: false).fetchUsers();
+    }
   }
 
   void _selectUser(String userName) {
@@ -60,6 +73,7 @@ class _Screen3State extends State<Screen3> {
             key: _refreshIndicatorKey,
             onRefresh: () => _refreshUsers(context),
             child: ListView.builder(
+              controller: _scrollController,
               itemCount:
                   userProvider.users.length + (userProvider.hasMore ? 1 : 0),
               itemBuilder: (context, index) {
@@ -67,7 +81,7 @@ class _Screen3State extends State<Screen3> {
                   User user = userProvider.users[index];
                   return ListTile(
                     leading: CircleAvatar(
-                      radius: 30.0,
+                      radius: 50.0,
                       backgroundImage: NetworkImage(user.avatar),
                     ),
                     title: Text(
@@ -87,15 +101,16 @@ class _Screen3State extends State<Screen3> {
                     onTap: () => _selectUser(user.fullName),
                   );
                 } else {
-                  if (!userProvider.isLoading) {
-                    _loadMoreUsers(context);
+                  if (userProvider.hasMore) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 32.0),
+                      child: Center(
+                        child: CircularProgressIndicator(),
+                      ),
+                    );
+                  } else {
+                    return SizedBox.shrink();
                   }
-                  return const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 32.0),
-                    child: Center(
-                      child: CircularProgressIndicator(),
-                    ),
-                  );
                 }
               },
             ),
