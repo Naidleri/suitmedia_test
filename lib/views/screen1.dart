@@ -25,7 +25,10 @@ class Screen1 extends StatelessWidget {
           content: Text(isPalindrome ? 'isPalindrome' : 'not palindrome'),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () {
+                Navigator.of(context).pop();
+                _palindromeController.clear();
+              },
               child: const Text('OK'),
             ),
           ],
@@ -116,14 +119,15 @@ class Screen1 extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Container(
-                      //untuk responsif dari aplikasi saya lebih menggunakan mediaquery daripada pixel
-                      width: screenWidth * 0.2,
-                      height: screenHeight * 0.2,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: Colors.white.withOpacity(0.5),
-                      ),
-                      child: const Icon(Icons.person_add_alt_1)),
+                    //untuk responsif dari aplikasi saya lebih menggunakan mediaquery daripada pixel
+                    width: screenWidth * 0.2,
+                    height: screenHeight * 0.2,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.white.withOpacity(0.5),
+                    ),
+                    child: const Icon(Icons.person_add_alt_1),
+                  ),
                   Container(
                     padding: const EdgeInsets.all(10),
                     child: TextField(
@@ -171,15 +175,17 @@ class Screen1 extends StatelessWidget {
                     ),
                   ),
                   PublicButton(
-                      label: 'CHECK',
-                      onPressed: () {
-                        _checkPalindrome(context);
-                      }),
+                    label: 'CHECK',
+                    onPressed: () {
+                      _checkPalindrome(context);
+                    },
+                  ),
                   PublicButton(
-                      label: 'NEXT',
-                      onPressed: () {
-                        _validateAndNavigate(context);
-                      })
+                    label: 'NEXT',
+                    onPressed: () {
+                      _validateAndNavigate(context);
+                    },
+                  )
                 ],
               ),
             ),

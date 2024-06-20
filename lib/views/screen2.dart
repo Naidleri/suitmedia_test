@@ -73,12 +73,10 @@ class _Screen2State extends State<Screen2> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text("Welcome",
-                    style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                const Text("Welcome", style: TextStyle(fontSize: 14)),
                 Text(_namaScreen1,
                     style:
-                        TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
+                        TextStyle(fontSize: 20, fontWeight: FontWeight.w600)),
               ],
             ),
           ),
