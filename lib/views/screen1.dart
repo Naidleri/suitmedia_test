@@ -1,8 +1,66 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
+import 'package:suitmedia_test_intern/widgets/button.dart';
 
 class Screen1 extends StatelessWidget {
-  const Screen1({super.key});
+  Screen1({super.key});
+  final TextEditingController _namaController = TextEditingController();
+  final TextEditingController _palindromeController = TextEditingController();
+
+  static bool isPalindrome(String text) {
+    final processedText = text.replaceAll(' ', '');
+    for (int i = 0; i < processedText.length / 2; i++) {
+      if (processedText[i] != processedText[processedText.length - i - 1]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  void _showPalindromeDialog(BuildContext context, bool isPalindrome) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Palindrome Check'),
+          content: Text(isPalindrome ? 'isPalindrome' : 'not palindrome'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _checkPalindrome(BuildContext context) {
+    if (_palindromeController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Check palindrome tidak boleh kosong')),
+      );
+      return;
+    }
+    String text = _palindromeController.text;
+    bool result = isPalindrome(text);
+    _showPalindromeDialog(context, result);
+  }
+
+  void _validateAndNavigate(BuildContext context) {
+    if (_namaController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Nama tidak boleh kosong')),
+      );
+      return;
+    }
+    if (_palindromeController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Check palindrome tidak boleh kosong')),
+      );
+      return;
+    }
+    Navigator.pushReplacementNamed(context, '/screen2');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +72,8 @@ class Screen1 extends StatelessWidget {
         children: [
           Image.asset(
             "assets/images/background@3x.png",
-            scale: 2.0,
+            height: double.maxFinite,
+            fit: BoxFit.cover,
           ),
           // membuat background secara manual
           // Container(color: Color.fromARGB(255, 75, 164, 170)),
@@ -57,7 +116,7 @@ class Screen1 extends StatelessWidget {
           Center(
             child: Container(
               width: screenWidth * 0.8,
-              height: screenHeight * 0.5,
+              height: screenHeight * 0.6,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
@@ -69,87 +128,63 @@ class Screen1 extends StatelessWidget {
                         shape: BoxShape.circle,
                         color: Colors.white.withOpacity(0.5),
                       ),
-                      child: Icon(Icons.person_add_alt_1)),
+                      child: const Icon(Icons.person_add_alt_1)),
                   Container(
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     child: TextField(
+                      controller: _namaController,
                       decoration: InputDecoration(
                         hintText: 'Name',
                         filled: true,
                         fillColor: Colors.white,
                         border: InputBorder.none,
-                        hintStyle: TextStyle(color: Colors.grey),
+                        hintStyle: const TextStyle(color: Colors.grey),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.transparent),
+                          borderSide:
+                              const BorderSide(color: Colors.transparent),
                           borderRadius: BorderRadius.circular(15.0),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.transparent),
+                          borderSide:
+                              const BorderSide(color: Colors.transparent),
                           borderRadius: BorderRadius.circular(15.0),
                         ),
                       ),
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.all(10),
+                    padding: const EdgeInsets.all(10),
                     child: TextField(
+                      controller: _palindromeController,
                       decoration: InputDecoration(
                         hintText: 'Palindrome',
                         filled: true,
                         fillColor: Colors.white,
                         border: InputBorder.none,
-                        hintStyle: TextStyle(color: Colors.grey),
+                        hintStyle: const TextStyle(color: Colors.grey),
                         enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.transparent),
+                          borderSide:
+                              const BorderSide(color: Colors.transparent),
                           borderRadius: BorderRadius.circular(15.0),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Colors.transparent),
+                          borderSide:
+                              const BorderSide(color: Colors.transparent),
                           borderRadius: BorderRadius.circular(15.0),
                         ),
                       ),
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      width: screenWidth,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 43, 99, 123),
-                        ),
-                        onPressed: () {},
-                        child: const Text(
-                          "CHECK",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      width: screenWidth,
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor:
-                              const Color.fromARGB(255, 43, 99, 123),
-                        ),
-                        onPressed: () {},
-                        child: const Text(
-                          "NEXT",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  PublicButton(
+                      label: 'CHECK',
+                      onPressed: () {
+                        _checkPalindrome(context);
+                      }),
+                  PublicButton(
+                      label: 'NEXT',
+                      onPressed: () {
+                        _validateAndNavigate(context);
+                      })
                 ],
               ),
             ),
