@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:suitmedia_test_intern/widgets/button.dart';
 
 class Screen2 extends StatefulWidget {
   const Screen2({super.key});
@@ -8,6 +9,18 @@ class Screen2 extends StatefulWidget {
 }
 
 class _Screen2State extends State<Screen2> {
+  String _namaScreen1 = '';
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final args = ModalRoute.of(context)?.settings.arguments;
+    if (args != null) {
+      setState(() {
+        _namaScreen1 = args as String;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
@@ -32,13 +45,13 @@ class _Screen2State extends State<Screen2> {
             width: double.infinity,
             color: Colors.amber,
             padding: EdgeInsets.all(20),
-            child: const Column(
+            child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Welcome",
+                const Text("Welcome",
                     style:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-                Text("John",
+                Text(_namaScreen1,
                     style:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.w800)),
               ],
@@ -54,25 +67,7 @@ class _Screen2State extends State<Screen2> {
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 34),
             )),
           ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              width: screenWidth,
-              child: ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromARGB(255, 43, 99, 123),
-                ),
-                onPressed: () {},
-                child: const Text(
-                  "Choose a User",
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ),
-            ),
-          ),
+          PublicButton(label: 'Choose a user', onPressed: () {})
         ],
       ),
     );

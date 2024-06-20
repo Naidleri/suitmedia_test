@@ -53,13 +53,8 @@ class Screen1 extends StatelessWidget {
       );
       return;
     }
-    if (_palindromeController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Check palindrome tidak boleh kosong')),
-      );
-      return;
-    }
-    Navigator.pushReplacementNamed(context, '/screen2');
+    Navigator.pushReplacementNamed(context, '/screen2',
+        arguments: _namaController.text);
   }
 
   @override
